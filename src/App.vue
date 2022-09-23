@@ -1,10 +1,24 @@
 <template>
     <div>
-        <div class="app flex flex-column flex-md-row">
+        <div v-if="!mobile" class="app flex flex-column flex-md-row">
             <MainNavigation />
             <div class="app-content flex flex-column">
                 <router-view />
             </div>
+        </div>
+        <div v-else class="mobile-message flex flex-column">
+            <h1>Sorry, this app is not suited for Mobile Devices</h1>
+            <p>For better experience, please use a computer or tablet</p>
+
+            <label aria-label="Continue with mobile" class="flex">
+                <input
+                    type="checkbox"
+                    name="Continue with mobile"
+                    id="continueWithMobile"
+                    @change="continueWithMobile"
+                />
+                Continue with mobile
+            </label>
         </div>
     </div>
 </template>
@@ -13,8 +27,37 @@
 import MainNavigation from "@/components/MainNavigation.vue";
 
 export default {
+    data() {
+        return {
+            mobile: null,
+        };
+    },
+
     components: {
         MainNavigation,
+    },
+
+    created() {
+        this.checkMobileScreen();
+        window.addEventListener("resize", this.checkMobileScreen);
+    },
+
+    methods: {
+        checkMobileScreen() {
+            const windowWidth = window.innerWidth;
+
+            if (windowWidth <= 750) {
+                this.mobile = true;
+                return;
+            } else {
+                this.mobile = false;
+            }
+        },
+
+        continueWithMobile(event) {
+            console.log(event);
+            this.mobile = false;
+        },
     },
 };
 </script>
@@ -23,7 +66,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
 :root {
-    --fontPoppins: "Poppins", sans-serif;
+    --fontPoppins: "Poppins", Arial, sans-serif;
 
     --purple: #7c5dfa;
     --darkPurple: #252945;
@@ -50,11 +93,10 @@ export default {
 }
 
 #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: var(--customText);
+    letter-spacing: 0.05px;
     overflow-x: hidden;
 }
 
@@ -67,6 +109,29 @@ export default {
         -ms-flex: 1;
         flex: 1;
         padding: 0 20px;
+    }
+}
+
+.mobile-message {
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    background-color: var(--black);
+    color: var(--white);
+
+    h1 {
+        font-size: 24px;
+    }
+
+    p,
+    label {
+        margin-top: 16px;
+    }
+
+    label input {
+        margin-right: 5px;
     }
 }
 
