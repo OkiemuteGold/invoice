@@ -1,23 +1,23 @@
 <template>
     <div>
-        <div v-if="!mobile" class="app flex flex-column flex-md-row">
+        <div class="app flex flex-column flex-md-row" v-if="!mobile">
             <MainNavigation />
             <div class="app-content flex flex-column">
                 <router-view />
             </div>
         </div>
-        <div v-else class="mobile-message flex flex-column">
+        <div class="mobile-message flex flex-column" v-else>
             <h1>Sorry, this app is not suited for Mobile Devices</h1>
             <p>For better experience, please use a computer or tablet</p>
 
-            <label aria-label="Continue with mobile" class="flex">
+            <label aria-label="Continue on mobile" class="flex">
                 <input
                     type="checkbox"
-                    name="Continue with mobile"
-                    id="continueWithMobile"
-                    @change="continueWithMobile"
+                    name="Continue on mobile"
+                    id="continueOnMobile"
+                    @change="continueOnMobile"
                 />
-                Continue with mobile
+                Continue on mobile anyways
             </label>
         </div>
     </div>
@@ -54,7 +54,7 @@ export default {
             }
         },
 
-        continueWithMobile(event) {
+        continueOnMobile(event) {
             console.log(event);
             this.mobile = false;
         },
@@ -76,6 +76,7 @@ export default {
     --red: #ec5757;
     --white: #fff;
     --black: #141625;
+    --black2: #1e2139;
 
     --customParaText: #737373;
     --customText: #2c3e50;

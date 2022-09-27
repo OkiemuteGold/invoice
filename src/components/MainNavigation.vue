@@ -15,7 +15,7 @@ export default {};
 
 <style lang="scss" scoped>
 header {
-    background-color: #1e2139;
+    background-color: var(--black2);
     z-index: 99;
 
     @media (min-width: 900px) {
