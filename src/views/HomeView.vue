@@ -16,21 +16,23 @@
                         aria-label="filter menu options"
                     />
 
-                    <ul class="filter-menu" v-show="filterMenu">
-                        <li>Draft</li>
-                        <li>Pending</li>
-                        <li>Paid</li>
-                        <li>Clear Filter</li>
-                    </ul>
+                    <transition name="zoomIn">
+                        <ul class="filter-menu" v-show="filterMenu">
+                            <li>Draft</li>
+                            <li>Pending</li>
+                            <li>Paid</li>
+                            <li>Clear Filter</li>
+                        </ul>
+                    </transition>
                 </div>
 
-                <div class="button flex" @click="createNewInvoice">
+                <div
+                    class="button flex"
+                    aria-label="create new invoice"
+                    @click="createNewInvoice"
+                >
                     <div class="inner flex">
-                        <img
-                            src="@/assets/icon-plus.svg"
-                            alt="plus icon"
-                            aria-label="new invoice"
-                        />
+                        <img src="@/assets/icon-plus.svg" alt="plus icon" />
                     </div>
                     <span>New invoice</span>
                 </div>
@@ -40,6 +42,8 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
     name: "HomeView",
 
@@ -50,11 +54,15 @@ export default {
     },
 
     methods: {
+        ...mapMutations(["TOGGLE_INVOICE"]),
+
+        createNewInvoice() {
+            this.TOGGLE_INVOICE();
+        },
+
         toggleFilterMenu() {
             this.filterMenu = !this.filterMenu;
         },
-
-        createNewInvoice() {},
     },
 };
 </script>
@@ -82,6 +90,7 @@ export default {
 
                 span {
                     font-size: 14px;
+                    text-transform: capitalize;
                 }
             }
 
@@ -103,7 +112,7 @@ export default {
                     background-color: var(--black2);
                     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
                         0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                    border-radius: 5px;
+                    border-radius: var(--radius4);
                     list-style: none;
 
                     li {
@@ -112,11 +121,11 @@ export default {
                         cursor: pointer;
 
                         &:first-child {
-                            border-radius: 5px 5px 0 0;
+                            border-radius: var(--radius4) var(--radius4) 0 0;
                         }
 
                         &:last-child {
-                            border-radius: 0 0 5px 5px;
+                            border-radius: 0 0 var(--radius4) var(--radius4);
                         }
 
                         &:hover {
@@ -130,7 +139,7 @@ export default {
             .button {
                 background-color: var(--purple);
                 padding: 8px 10px;
-                border-radius: 40px;
+                border-radius: var(radius40);
 
                 .inner {
                     align-items: center;
@@ -172,5 +181,22 @@ export default {
             text-align: center;
         }
     }
+}
+
+.zoomIn-enter-active,
+.zoomIn-leave-active {
+    -o-transition: 0.2s ease-in-out all;
+    -moz-transition: 0.2s ease-in-out all;
+    -webkit-transition: 0.2s ease-in-out all;
+    transition: 0.2s ease-in-out all;
+}
+
+.zoomIn-enter-from,
+.zoomIn-leave-to {
+    -o-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
 }
 </style>

@@ -3,6 +3,10 @@
         <div class="app flex flex-column flex-md-row" v-if="!mobile">
             <MainNavigation />
             <div class="app-content flex flex-column">
+                <transition name="slideIn">
+                    <InvoiceModal v-if="invoiceModal" />
+                </transition>
+
                 <router-view />
             </div>
         </div>
@@ -25,6 +29,9 @@
 
 <script>
 import MainNavigation from "@/components/MainNavigation.vue";
+import InvoiceModal from "./components/InvoiceModal.vue";
+
+import { mapState } from "vuex";
 
 export default {
     data() {
@@ -35,6 +42,11 @@ export default {
 
     components: {
         MainNavigation,
+        InvoiceModal,
+    },
+
+    computed: {
+        ...mapState(["invoiceModal"]),
     },
 
     created() {
@@ -78,12 +90,13 @@ export default {
     --black: #141625;
     --black2: #1e2139;
 
-    --customParaText: #737373;
-    --customText: #2c3e50;
+    --customText: #777f98;
 
     --radius4: 4px;
     --radius10: 10px;
+    --radius20: 20px;
     --radius30: 30px;
+    --radius40: 40px;
 }
 
 * {
@@ -96,7 +109,6 @@ export default {
 #app {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: var(--customText);
     letter-spacing: 0.05px;
     overflow-x: hidden;
 }
@@ -111,6 +123,23 @@ export default {
         flex: 1;
         padding: 0 20px;
     }
+}
+
+.slideIn-enter-active,
+.slideIn-leave-active {
+    -o-transition: 0.8s ease all;
+    -moz-transition: 0.8s ease all;
+    -webkit-transition: 0.8s ease all;
+    transition: 0.8s ease all;
+}
+
+.slideIn-enter-from,
+.slideIn-leave-to {
+    -o-transform: translateX(-700px);
+    -ms-transform: translateX(-700px);
+    -moz-transform: translateX(-700px);
+    -webkit-transform: translateX(-700px);
+    transform: translateX(-700px);
 }
 
 .mobile-message {
@@ -141,7 +170,6 @@ export default {
 
 //     a {
 //         font-weight: bold;
-//         color: var(--customText);
 
 //         &.router-link-exact-active {
 //             color: #42b983;

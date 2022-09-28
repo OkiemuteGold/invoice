@@ -21,14 +21,14 @@ header {
     @media (min-width: 900px) {
         min-width: 90px;
         min-height: 100%;
-        border-radius: 0 20px 20px 0;
+        border-radius: 0 var(--radius20) var(--radius20) 0;
     }
 
     .logo {
         justify-content: center;
         background-color: var(--purple);
         padding: 24px;
-        border-radius: 0 20px 20px 0;
+        border-radius: 0 var(--radius20) var(--radius20) 0;
 
         @media (min-width: 900px) {
             width: 100%;
