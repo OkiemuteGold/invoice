@@ -215,7 +215,7 @@
                             <img
                                 src="@/assets/icon-delete.svg"
                                 alt="delete icon"
-                                @click="deleteInvoiceItem(item.id)"
+                                @click="deleteInvoice(item.uid)"
                             />
                         </tr>
                     </table>
@@ -269,6 +269,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import { uid } from "uid";
 
 export default {
     data() {
@@ -302,11 +303,50 @@ export default {
         };
     },
 
+    created() {
+        this.invoiceDateUnix = Date.now();
+        this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString(
+            "en-us",
+            this.dateOptions
+        );
+    },
+
     methods: {
         ...mapMutations(["TOGGLE_INVOICE"]),
 
         closeInvoice() {
             this.TOGGLE_INVOICE();
+        },
+
+        addNewInvoice() {
+            this.invoiceItemList.push({
+                uid: uid(),
+                itemName: "",
+                qty: "",
+                price: 0,
+                total: 0,
+            });
+        },
+
+        deleteInvoice(currentItemId) {
+            this.invoiceItemList = this.invoiceItemList.filter(
+                (item) => item.uid !== currentItemId
+            );
+        },
+    },
+
+    watch: {
+        paymentTerms() {
+            const futureDate = new Date();
+            const paymentTermsNum = parseInt(this.paymentTerms);
+
+            this.paymentDueDateUnix = futureDate.setDate(
+                futureDate.getDate() + paymentTermsNum
+            );
+
+            this.paymentDueDate = new Date(
+                this.paymentDueDateUnix
+            ).toLocaleDateString("us-en", this.dateOptions);
         },
     },
 };
@@ -429,7 +469,8 @@ export default {
                             top: 15px;
                             right: 0;
                             width: 12px;
-                            height: 16px;
+                            height: 15px;
+                            cursor: pointer;
                         }
                     }
                 }
