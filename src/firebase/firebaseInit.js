@@ -1,9 +1,9 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
-import config from "../firebaseConfig.txt";
+import config from "../../firebaseConfig.txt";
 
 var firebaseConfig = {
-  apiKey: config[0].key,
+  apiKey: config[0].apiKey,
   authDomain: config[0].authDomain,
   projectId: config[0].projectId,
   storageBucket: config[0].storageBucket,
