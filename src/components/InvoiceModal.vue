@@ -5,6 +5,8 @@
         ref="invoiceWrap"
     >
         <form class="invoice-content" @submit.prevent="submitForm">
+            <LoadingProcess v-show="loading" />
+
             <h2 v-if="!editInvoice">New Invoice</h2>
             <h2 v-else>Edit Invoice</h2>
 
@@ -215,7 +217,7 @@
                             <img
                                 src="@/assets/icon-delete.svg"
                                 alt="delete icon"
-                                @click="deleteInvoice(item.uid)"
+                                @click="deleteInvoice(item.id)"
                             />
                         </tr>
                     </table>
@@ -270,10 +272,15 @@
 <script>
 import { mapMutations } from "vuex";
 import { uid } from "uid";
+import { db } from "../firebase/firebaseInit";
+import LoadingProcess from "./LoadingProcess.vue";
 
 export default {
+    components: { LoadingProcess },
     data() {
         return {
+            loading: null,
+
             dateOptions: {
                 year: "numeric",
                 month: "short",
@@ -290,16 +297,18 @@ export default {
             clientCity: null,
             clientZipCode: null,
             clientCountry: null,
+
             invoiceDateUnix: null,
             invoiceDate: null,
             paymentTerms: null,
             paymentDueDateUnix: null,
             paymentDueDate: null,
             productDescription: null,
-            invoicePending: null,
-            invoiceDraft: null,
             invoiceItemList: [],
             invoiceTotal: 0,
+
+            invoicePending: null,
+            invoiceDraft: null,
         };
     },
 
@@ -320,7 +329,7 @@ export default {
 
         addNewInvoice() {
             this.invoiceItemList.push({
-                uid: uid(),
+                id: uid(),
                 itemName: "",
                 qty: "",
                 price: 0,
@@ -330,8 +339,67 @@ export default {
 
         deleteInvoice(currentItemId) {
             this.invoiceItemList = this.invoiceItemList.filter(
-                (item) => item.uid !== currentItemId
+                (item) => item.id !== currentItemId
             );
+        },
+
+        calculateInvoiceTotalPrice() {
+            this.invoiceTotal = 0;
+            this.invoiceItemList.forEach((item) => {
+                this.invoiceTotal += item.total;
+            });
+        },
+
+        publishInvoice() {
+            this.invoicePending = true;
+        },
+
+        saveDraft() {
+            this.invoiceDraft = true;
+        },
+
+        async uploadInvoice() {
+            if (this.invoiceItemList.length <= 0) {
+                alert("Please fill out the invoice!");
+                return;
+            }
+
+            this.loading = true;
+            this.calculateInvoiceTotalPrice();
+
+            const dataBase = db.collection("invoices").doc();
+
+            await dataBase.set({
+                invoiceId: uid(8),
+                billerStreetAddress: this.billerStreetAddress,
+                billerCity: this.billerCity,
+                billerZipCode: this.billerZipCode,
+                billerCountry: this.billerCountry,
+                clientName: this.clientName,
+                clientEmail: this.clientEmail,
+                clientStreetAddress: this.clientStreetAddress,
+                clientCity: this.clientCity,
+                clientZipCode: this.clientZipCode,
+                clientCountry: this.clientCountry,
+                invoiceDateUnix: this.invoiceDateUnix,
+                invoiceDate: this.invoiceDate,
+                paymentTerms: this.paymentTerms,
+                paymentDueDateUnix: this.paymentDueDateUnix,
+                paymentDueDate: this.paymentDueDate,
+                productDescription: this.productDescription,
+                invoiceItemList: this.invoiceItemList,
+                invoiceTotal: this.invoiceTotal,
+                invoicePending: this.invoicePending,
+                invoiceDraft: this.invoiceDraft,
+                invoicePaid: null,
+            });
+
+            this.loading = false;
+            this.TOGGLE_INVOICE();
+        },
+
+        submitForm() {
+            this.uploadInvoice();
         },
     },
 
