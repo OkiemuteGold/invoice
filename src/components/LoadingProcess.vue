@@ -10,16 +10,16 @@ export default {};
 
 <style lang="scss" scoped>
 .loading {
+    position: absolute;
     top: 0;
     left: 0;
-    z-index: 101;
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 101;
 
     @keyframes spin {
         to {
@@ -36,6 +36,9 @@ export default {};
         border-top-color: #fff;
         border-bottom-color: #fff;
         border-radius: 50%;
+        -o-animation: spin ease 1000ms infinite;
+        -moz-animation: spin ease 1000ms infinite;
+        -webkit-animation: spin ease 1000ms infinite;
         animation: spin ease 1000ms infinite;
     }
 }

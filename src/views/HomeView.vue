@@ -70,8 +70,10 @@ export default {
 <style lang="scss" scoped>
 .home {
     color: var(--white);
+    z-index: 98;
 
     .header {
+        margin-top: 2%;
         margin-bottom: 65px;
 
         .left,
@@ -181,22 +183,49 @@ export default {
             text-align: center;
         }
     }
-}
 
-.zoomIn-enter-active,
-.zoomIn-leave-active {
-    -o-transition: 0.2s ease-in-out all;
-    -moz-transition: 0.2s ease-in-out all;
-    -webkit-transition: 0.2s ease-in-out all;
-    transition: 0.2s ease-in-out all;
-}
+    .zoomIn-enter-active,
+    .zoomIn-leave-active {
+        -o-transition: 0.2s ease-in-out all;
+        -moz-transition: 0.2s ease-in-out all;
+        -webkit-transition: 0.2s ease-in-out all;
+        transition: 0.2s ease-in-out all;
+    }
 
-.zoomIn-enter-from,
-.zoomIn-leave-to {
-    -o-transform: scale(0.8);
-    -ms-transform: scale(0.8);
-    -moz-transform: scale(0.8);
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
+    .zoomIn-enter-from,
+    .zoomIn-leave-to {
+        -o-transform: scale(0.8);
+        -ms-transform: scale(0.8);
+        -moz-transform: scale(0.8);
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+    }
+
+    @media (max-width: 541px) {
+        .header {
+            -ms-flex-direction: column;
+            flex-direction: column;
+            margin-top: 30px;
+
+            .right {
+                justify-content: space-between;
+                margin-top: 1.5rem;
+            }
+        }
+    }
+
+    @media (max-width: 300px) {
+        .header {
+            .right {
+                align-items: flex-start;
+                flex-direction: column-reverse;
+
+                .button {
+                    margin-left: 0;
+                    margin-bottom: 1.5rem;
+                }
+            }
+        }
+    }
 }
 </style>

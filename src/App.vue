@@ -191,7 +191,7 @@ button,
 .button {
     font-size: 12px;
     color: var(--white);
-    margin-right: 8px;
+    margin-left: 8px;
     padding: 16px 24px;
     border-radius: var(--radius30);
     border: none;

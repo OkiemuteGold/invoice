@@ -429,6 +429,7 @@ export default {
     width: 100%;
     height: 100vh;
     overflow: scroll;
+    z-index: 99;
 
     &::-webkit-scrollbar {
         display: none;
@@ -559,7 +560,7 @@ export default {
         }
 
         .save {
-            margin-top: 60px;
+            margin-top: 50px;
 
             div {
                 -ms-flex: 1;
@@ -592,6 +593,40 @@ export default {
 
         &:focus {
             outline: none;
+        }
+    }
+
+    @media (max-width: 541px) {
+        .invoice-content {
+            padding: 120px 20px 100px;
+
+            .invoice-work .payment {
+                gap: 18px;
+            }
+
+            .bill-to,
+            .bill-from {
+                .location-details {
+                    gap: 0;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                }
+            }
+
+            .save {
+                &,
+                & .right {
+                    -ms-flex-direction: column-reverse;
+                    flex-direction: column-reverse;
+                    justify-content: center;
+                }
+
+                button {
+                    width: 100%;
+                    margin-top: 0.5rem;
+                    margin-left: 0;
+                }
+            }
         }
     }
 }
