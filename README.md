@@ -53,4 +53,6 @@ OR import { doc, setDoc } from "firebase/firestore";
 
 Use:
 await setDoc(doc(db, "invoices", "new-city-id"), { ... })
+
+Ref: https://stackoverflow.com/questions/47474522/firestore-difference-between-set-and-add
 ```
