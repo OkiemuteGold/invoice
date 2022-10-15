@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 import config from "../../firebaseConfig.txt";
 
 var firebaseConfig = {
@@ -11,7 +11,7 @@ var firebaseConfig = {
   appId: config[0].appId,
 };
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-export { firebaseApp, db };
+export { app, db };

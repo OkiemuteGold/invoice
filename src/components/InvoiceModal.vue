@@ -273,6 +273,7 @@
 import { mapMutations } from "vuex";
 import { uid } from "uid";
 import { db } from "../firebase/firebaseInit";
+import { collection, addDoc } from "firebase/firestore";
 import LoadingProcess from "./LoadingProcess.vue";
 
 export default {
@@ -280,6 +281,7 @@ export default {
     data() {
         return {
             loading: null,
+            editInvoice: null,
 
             dateOptions: {
                 year: "numeric",
@@ -367,9 +369,8 @@ export default {
             this.loading = true;
             this.calculateInvoiceTotalPrice();
 
-            const dataBase = db.collection("invoices").doc();
-
-            await dataBase.set({
+            // Add a new document in collection "invoices"
+            await addDoc(collection(db, "invoices"), {
                 invoiceId: uid(8),
                 billerStreetAddress: this.billerStreetAddress,
                 billerCity: this.billerCity,
