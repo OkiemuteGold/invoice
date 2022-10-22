@@ -406,12 +406,12 @@ export default {
 
     watch: {
         paymentTerms() {
-            const futureDate = new Date();
-            const paymentTermsNum = parseInt(this.paymentTerms);
+            const date = new Date(),
+                dateDay = date.getDate();
 
-            this.paymentDueDateUnix = futureDate.setDate(
-                futureDate.getDate() + paymentTermsNum
-            );
+            const futureDate = dateDay + parseInt(this.paymentTerms);
+
+            this.paymentDueDateUnix = date.setDate(futureDate);
 
             this.paymentDueDate = new Date(
                 this.paymentDueDateUnix
