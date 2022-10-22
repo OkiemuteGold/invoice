@@ -38,14 +38,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- invoice -->
+        <AllInvoices
+            v-for="(invoiceSingle, index) in allInvoiceData"
+            :key="index"
+            :invoice="invoiceSingle"
+        />
     </div>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import AllInvoices from "@/components/AllInvoices";
+import { mapMutations, mapState } from "vuex";
 
 export default {
     name: "HomeView",
+
+    components: {
+        AllInvoices,
+    },
+
+    computed: {
+        ...mapState(["allInvoiceData"]),
+    },
 
     data() {
         return {

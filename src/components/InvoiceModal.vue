@@ -323,7 +323,13 @@ export default {
     },
 
     methods: {
-        ...mapMutations(["TOGGLE_INVOICE"]),
+        ...mapMutations(["TOGGLE_INVOICE", "TOGGLE_POPUP_MODAL"]),
+
+        checkClick(e) {
+            if (e.target === this.$refs.invoiceWrap) {
+                this.TOGGLE_POPUP_MODAL();
+            }
+        },
 
         closeInvoice() {
             this.TOGGLE_INVOICE();
