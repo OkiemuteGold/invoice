@@ -1,32 +1,36 @@
 <template>
-    <div>
-        <!-- name: 'Invoice', params: { invoiceId: invoice.invoiceId }  -->
-        <router-link class="invoice flex" :to="{}">
-            <div class="left flex">
-                <span class="tracking-number">#{{ invoice.invoiceId }}</span>
-                <span class="due-date">{{ invoice.paymentDueDate }}</span>
-                <span class="person">{{ invoice.clientName }}</span>
+    <!-- name: 'Invoice', params: { invoiceId: invoice.invoiceId }  -->
+    <router-link class="invoice flex" :to="{}">
+        <div class="left flex">
+            <span class="tracking-number">#{{ invoice.invoiceId }}</span>
+            <span class="due-date">{{ invoice.paymentDueDate }}</span>
+            <span class="person">{{ invoice.clientName }}</span>
+        </div>
+
+        <div class="right flex">
+            <span class="price">${{ invoice.invoiceTotal }}</span>
+
+            <div
+                class="status-button flex"
+                :class="{
+                    paid: invoice.invoicePaid,
+                    draft: invoice.invoiceDraft,
+                    pending: invoice.invoicePending,
+                }"
+            >
+                <span v-if="invoice.invoicePaid">Paid</span>
+                <span v-if="invoice.invoiceDraft">Draft</span>
+                <span v-if="invoice.invoicePending">Pending</span>
             </div>
-            <div class="right flex">
-                <span class="price">${{ invoice.invoiceTotal }}</span>
-                <div
-                    class="status-button flex"
-                    :class="{
-                        paid: invoice.invoicePaid,
-                        draft: invoice.invoiceDraft,
-                        pending: invoice.invoicePending,
-                    }"
-                >
-                    <span v-if="invoice.invoicePaid">Paid</span>
-                    <span v-if="invoice.invoiceDraft">Draft</span>
-                    <span v-if="invoice.invoicePending">Pending</span>
-                </div>
-                <div class="icon">
-                    <img src="@/assets/icon-arrow-right.svg" alt="" />
-                </div>
+
+            <div class="icon">
+                <img
+                    src="@/assets/icon-arrow-right.svg"
+                    alt="right arrow icon"
+                />
             </div>
-        </router-link>
-    </div>
+        </div>
+    </router-link>
 </template>
 
 <script>
@@ -73,9 +77,49 @@ export default {
 
         .price {
             font-size: 16px;
-            font-weight: 600px;
+            font-weight: 600;
             -ms-flex: 1;
             flex: 1;
+        }
+
+        .icon {
+            min-width: 7px;
+        }
+    }
+
+    @media (max-width: 730px) {
+        -ms-flex-direction: column;
+        flex-direction: column;
+        align-items: stretch;
+        padding-left: 25px;
+        padding-right: 25px;
+        overflow-x: auto;
+
+        .left,
+        .right {
+            flex-basis: 100%;
+        }
+
+        .right {
+            .status-button {
+                margin-right: 5%;
+            }
+        }
+    }
+
+    @media (max-width: 541px) {
+        span {
+            white-space: nowrap;
+        }
+
+        .left,
+        .right {
+            overflow-x: auto;
+
+            span {
+                -ms-flex: 1;
+                flex: 1;
+            }
         }
     }
 }

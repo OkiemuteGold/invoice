@@ -73,9 +73,9 @@ export default {
             }
         },
 
-        continueOnMobile(event) {
-            console.log(event);
-            this.mobile = false;
+        continueOnMobile() {
+            const windowWidth = window.innerWidth;
+            windowWidth < 320 ? (this.mobile = true) : (this.mobile = false);
         },
     },
 };
@@ -132,6 +132,7 @@ export default {
     }
 }
 
+// slide in transition
 .slideIn-enter-active,
 .slideIn-leave-active {
     -o-transition: 0.8s ease all;
@@ -149,6 +150,24 @@ export default {
     transform: translateX(-700px);
 }
 
+// zoom in transition
+.zoomIn-enter-active,
+.zoomIn-leave-active {
+    -o-transition: 0.2s ease-in-out all;
+    -moz-transition: 0.2s ease-in-out all;
+    -webkit-transition: 0.2s ease-in-out all;
+    transition: 0.2s ease-in-out all;
+}
+
+.zoomIn-enter-from,
+.zoomIn-leave-to {
+    -o-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+}
+
 .mobile-message {
     height: 100vh;
     justify-content: center;
@@ -164,25 +183,13 @@ export default {
 
     p,
     label {
-        margin-top: 16px;
+        margin-top: 25px;
     }
 
     label input {
         margin-right: 5px;
     }
 }
-
-// nav {
-//     padding: 30px;
-
-//     a {
-//         font-weight: bold;
-
-//         &.router-link-exact-active {
-//             color: #42b983;
-//         }
-//     }
-// }
 
 .nav-link {
     text-decoration: none;
@@ -306,6 +313,12 @@ button,
     .flex-md-column {
         -ms-flex-direction: column;
         flex-direction: column;
+    }
+}
+
+@media (max-width: 320px) {
+    .mobile-message label {
+        display: none;
     }
 }
 </style>

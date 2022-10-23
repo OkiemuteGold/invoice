@@ -1,6 +1,5 @@
 import { createStore } from 'vuex';
 import { db } from "../firebase/firebaseInit";
-// import { doc, getDoc } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
 
 export default createStore({

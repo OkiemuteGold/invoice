@@ -40,11 +40,13 @@
         </div>
 
         <!-- invoice -->
-        <AllInvoices
-            v-for="(invoiceSingle, index) in allInvoiceData"
-            :key="index"
-            :invoice="invoiceSingle"
-        />
+        <div>
+            <AllInvoices
+                v-for="(invoiceSingle, index) in allInvoiceData"
+                :key="index"
+                :invoice="invoiceSingle"
+            />
+        </div>
     </div>
 </template>
 
@@ -198,23 +200,6 @@ export default {
             margin-top: 16px;
             text-align: center;
         }
-    }
-
-    .zoomIn-enter-active,
-    .zoomIn-leave-active {
-        -o-transition: 0.2s ease-in-out all;
-        -moz-transition: 0.2s ease-in-out all;
-        -webkit-transition: 0.2s ease-in-out all;
-        transition: 0.2s ease-in-out all;
-    }
-
-    .zoomIn-enter-from,
-    .zoomIn-leave-to {
-        -o-transform: scale(0.8);
-        -ms-transform: scale(0.8);
-        -moz-transform: scale(0.8);
-        -webkit-transform: scale(0.8);
-        transform: scale(0.8);
     }
 
     @media (max-width: 541px) {
