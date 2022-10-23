@@ -40,12 +40,25 @@
         </div>
 
         <!-- invoice -->
-        <div>
+        <div v-if="allInvoiceData > 0">
             <AllInvoices
                 v-for="(invoiceSingle, index) in allInvoiceData"
                 :key="index"
                 :invoice="invoiceSingle"
             />
+        </div>
+
+        <div v-else class="empty flex flex-column">
+            <img
+                src="@/assets/illustration-empty.svg"
+                alt="no invoice illustration"
+            />
+
+            <h3>There is nothing here</h3>
+            <p>
+                Create a new invoice by clicking the New Invoice button and get
+                started
+            </p>
         </div>
     </div>
 </template>
@@ -180,13 +193,10 @@ export default {
     }
 
     .empty {
+        max-width: 320px;
+        justify-content: center;
         align-items: center;
-        margin-top: 160px;
-
-        img {
-            width: 214px;
-            height: 200px;
-        }
+        margin: 100px auto;
 
         h3 {
             font-size: 20px;
@@ -194,7 +204,7 @@ export default {
         }
 
         p {
-            max-width: 224px;
+            max-width: 230px;
             font-size: 12px;
             font-weight: 300;
             margin-top: 16px;

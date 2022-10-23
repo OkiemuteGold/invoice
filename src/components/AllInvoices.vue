@@ -1,6 +1,8 @@
 <template>
-    <!-- name: 'Invoice', params: { invoiceId: invoice.invoiceId }  -->
-    <router-link class="invoice flex" :to="{}">
+    <router-link
+        class="invoice flex"
+        :to="{ name: 'Invoice', params: { invoiceId: invoice.invoiceId } }"
+    >
         <div class="left flex">
             <span class="tracking-number">#{{ invoice.invoiceId }}</span>
             <span class="due-date">{{ invoice.paymentDueDate }}</span>
