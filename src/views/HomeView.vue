@@ -40,7 +40,7 @@
         </div>
 
         <!-- invoice -->
-        <div v-if="allInvoiceData > 0">
+        <div v-if="allInvoiceData.length > 0">
             <AllInvoices
                 v-for="(invoiceSingle, index) in allInvoiceData"
                 :key="index"
