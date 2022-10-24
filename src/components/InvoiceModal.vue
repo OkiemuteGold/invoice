@@ -365,7 +365,7 @@ export default {
             "TOGGLE_EDIT_INVOICE",
         ]),
 
-        ...mapActions(["UPDATE_INVOICE"]),
+        ...mapActions(["UPDATE_INVOICE", "GET_ALL_INVOICES"]),
 
         checkClick(e) {
             if (e.target === this.$refs.invoiceWrap) {
@@ -421,7 +421,6 @@ export default {
             this.loading = true;
             this.calculateInvoiceTotalPrice();
 
-            // Add a new document in collection "invoices"
             await addDoc(collection(db, "invoices"), {
                 invoiceId: uid(8),
                 billerStreetAddress: this.billerStreetAddress,
@@ -448,7 +447,9 @@ export default {
             });
 
             this.loading = false;
+
             this.TOGGLE_INVOICE();
+            this.GET_ALL_INVOICES();
         },
 
         async updateInvoice() {
