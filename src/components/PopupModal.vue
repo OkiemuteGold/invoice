@@ -14,11 +14,15 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 export default {
     methods: {
-        ...mapMutations(["TOGGLE_POPUP_MODAL", "TOGGLE_INVOICE"]),
+        ...mapMutations([
+            "TOGGLE_POPUP_MODAL",
+            "TOGGLE_INVOICE",
+            "TOGGLE_EDIT_INVOICE",
+        ]),
 
         closeModal() {
             this.TOGGLE_POPUP_MODAL();
@@ -28,15 +32,15 @@ export default {
             this.TOGGLE_POPUP_MODAL();
             this.TOGGLE_INVOICE();
 
-            //   if (this.editInvoice) {
-            //     this.TOGGLE_EDIT_INVOICE();
-            //   }
+            if (this.editInvoice) {
+                this.TOGGLE_EDIT_INVOICE();
+            }
         },
     },
 
-    //   computed: {
-    //     ...mapState(["editInvoice"]),
-    //   },
+    computed: {
+        ...mapState(["editInvoice"]),
+    },
 };
 </script>
 
@@ -52,8 +56,8 @@ export default {
 
     .modal-content {
         max-width: 450px;
-        background-color: #252945;
-        color: #fff;
+        background-color: var(--darkPurple);
+        color: var(--white);
         padding: 48px 32px;
         border-radius: 20px;
 

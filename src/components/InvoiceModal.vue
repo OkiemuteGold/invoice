@@ -270,7 +270,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import { uid } from "uid";
 import { db } from "../firebase/firebaseInit";
 import { collection, addDoc } from "firebase/firestore";
@@ -278,10 +278,14 @@ import LoadingProcess from "./LoadingProcess.vue";
 
 export default {
     components: { LoadingProcess },
+
+    computed: {
+        ...mapState(["editInvoice"]),
+    },
+
     data() {
         return {
             loading: null,
-            editInvoice: null,
 
             dateOptions: {
                 year: "numeric",
@@ -323,7 +327,11 @@ export default {
     },
 
     methods: {
-        ...mapMutations(["TOGGLE_INVOICE", "TOGGLE_POPUP_MODAL"]),
+        ...mapMutations([
+            "TOGGLE_INVOICE",
+            "TOGGLE_POPUP_MODAL",
+            "TOGGLE_EDIT_INVOICE",
+        ]),
 
         checkClick(e) {
             if (e.target === this.$refs.invoiceWrap) {
@@ -333,6 +341,10 @@ export default {
 
         closeInvoice() {
             this.TOGGLE_INVOICE();
+
+            if (this.editInvoice) {
+                this.TOGGLE_EDIT_INVOICE();
+            }
         },
 
         addNewInvoice() {
@@ -555,8 +567,8 @@ export default {
                     width: 100%;
                     align-items: center;
                     justify-content: center;
-                    background-color: #252945;
-                    color: #fff;
+                    background-color: var(--darkPurple);
+                    color: var(--white);
 
                     img {
                         margin-right: 5px;
@@ -591,8 +603,8 @@ export default {
     input,
     select {
         width: 100%;
-        background-color: #1e2139;
-        color: #fff;
+        background-color: var(--black2);
+        color: var(--white);
         padding: 12px 10px;
         border-radius: var(--radius4);
         border: none;

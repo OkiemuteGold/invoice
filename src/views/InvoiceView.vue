@@ -24,10 +24,7 @@
             </div>
 
             <div class="right flex">
-                <button
-                    @click="toggleEditInvoice(currentInvoice.docId)"
-                    class="dark-purple"
-                >
+                <button @click="toggleEditInvoice" class="dark-purple">
                     Edit
                 </button>
                 <button
@@ -266,7 +263,7 @@ export default {
                 }
 
                 span {
-                    color: #888eb0;
+                    color: var(--customText);
                 }
             }
 

@@ -45,8 +45,8 @@ export default {
 .invoice {
     gap: 16px;
     align-items: center;
-    background-color: #1e2139;
-    color: #fff;
+    background-color: var(--black2);
+    color: var(--white);
     padding: 28px 32px;
     margin-bottom: 16px;
     border-radius: 20px;
