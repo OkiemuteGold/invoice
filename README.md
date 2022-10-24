@@ -47,12 +47,28 @@ export { auth, db };
 import { collection, addDoc } from "firebase/firestore";
 
 Use:
-await addDoc(collection(db, "invoices"), { ... })
+await addDoc(collection(db, "invoices"), { ... });
 
 OR import { doc, setDoc } from "firebase/firestore";
 
 Use:
-await setDoc(doc(db, "invoices", "new-city-id"), { ... })
+await setDoc(doc(db, "invoices", "new-city-id"), { ... });
 
 Ref: https://stackoverflow.com/questions/47474522/firestore-difference-between-set-and-add
+```
+
+### Firebase - Update
+
+```
+setDoc():
+while using setDoc(), include
+{ merge: true },
+after the data { ... }, to merge otherwise its contents will be overwritten with the newly provided data.
+
+
+updateDoc():
+import { doc, updateDoc } from "firebase/firestore";
+
+const invoiceDoc = doc(db, "invoices", docId);
+await updateDoc(invoiceDoc, { ... });
 ```

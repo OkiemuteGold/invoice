@@ -134,6 +134,10 @@ export default {
         ...mapState(["currentInvoiceArray", "editInvoice"]),
     },
 
+    created() {
+        this.getCurrentInvoice();
+    },
+
     data() {
         return {
             currentInvoice: null,
@@ -175,10 +179,6 @@ export default {
         updateStatusToPending(docId) {
             this.UPDATE_STATUS_TO_PENDING(docId);
         },
-    },
-
-    created() {
-        this.getCurrentInvoice();
     },
 
     watch: {

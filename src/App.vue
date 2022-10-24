@@ -54,13 +54,13 @@ export default {
     },
 
     created() {
-        this.getAllInvoices();
+        this.GET_ALL_INVOICES();
         this.checkMobileScreen();
         window.addEventListener("resize", this.checkMobileScreen);
     },
 
     methods: {
-        ...mapActions(["getAllInvoices"]),
+        ...mapActions(["GET_ALL_INVOICES"]),
 
         checkMobileScreen() {
             const windowWidth = window.innerWidth;
@@ -74,8 +74,9 @@ export default {
         },
 
         continueOnMobile() {
-            const windowWidth = window.innerWidth;
-            windowWidth < 320 ? (this.mobile = true) : (this.mobile = false);
+            window.innerWidth < 320
+                ? (this.mobile = true)
+                : (this.mobile = false);
         },
     },
 };
