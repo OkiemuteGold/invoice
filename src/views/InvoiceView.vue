@@ -1,5 +1,6 @@
 <template>
     <div v-if="currentInvoice" class="invoice-view container">
+        <!-- v-if="!printing" -->
         <router-link class="nav-link flex" :to="{ name: 'Home' }">
             <img src="@/assets/icon-arrow-left.svg" alt="left arrow icon" /> Go
             Back
@@ -56,7 +57,7 @@
         </div>
 
         <!-- Invoice Details -->
-        <div class="invoice-details flex flex-column">
+        <div class="invoice-details flex flex-column" ref="invoiceContent">
             <div class="top flex">
                 <div class="left flex flex-column">
                     <p><span>#</span>{{ currentInvoice.invoiceId }}</p>
@@ -122,11 +123,18 @@
                 </div>
             </div>
         </div>
+
+        <button class="download-button purple" @click="downloadInvoice">
+            Download Invoice
+        </button>
     </div>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
 export default {
     name: "invoiceView",
 
@@ -141,6 +149,7 @@ export default {
     data() {
         return {
             currentInvoice: null,
+            printing: null,
         };
     },
 
@@ -178,6 +187,61 @@ export default {
 
         updateStatusToPending(docId) {
             this.UPDATE_STATUS_TO_PENDING(docId);
+        },
+
+        // downloadInvoiceOld() {
+        //     this.printing = true;
+        //     setTimeout(() => {
+        //         window.print();
+        //     }, 200);
+
+        //     setTimeout(() => {
+        //         this.printing = false;
+        //     }, 400);
+        // },
+
+        downloadInvoice() {
+            const invoiceName = this.currentInvoice.invoiceId;
+            const content = this.$refs.invoiceContent;
+            // const contentHtml = content.innerText;
+
+            // {orientation: "landscape",} as arg in jsPDF
+            const doc = new jsPDF({
+                orientation: "landscape",
+                unit: "px",
+                format: "a4",
+                hotfixes: ["px_scaling"],
+            });
+
+            // doc.text(contentHtml, 10, 10);
+            // doc.save("invoice-" + invoiceName + ".pdf");
+
+            // let canvasElement = document.createElement("canvas");
+            // html2canvas(content, { canvas: canvasElement }).then(function (
+            //     canvas
+            // ) {
+            //     const img = canvas.toDataURL("image/jpeg", 0.8);
+            //     doc.addImage(img, "JPEG", 20, 20);
+            //     doc.save("invoice-" + invoiceName + ".pdf");
+            // });
+
+            html2canvas(content, {
+                width: doc.internal.pageSize.getWidth(),
+                height: doc.internal.pageSize.getHeight(),
+            }).then((canvas) => {
+                const img = canvas.toDataURL("image/png");
+
+                doc.addImage(
+                    img,
+                    "PNG",
+                    140,
+                    10,
+                    doc.internal.pageSize.getWidth(),
+                    doc.internal.pageSize.getHeight()
+                );
+
+                doc.save("invoice-" + invoiceName + ".pdf");
+            });
         },
     },
 
@@ -392,6 +456,15 @@ export default {
                 }
             }
         }
+
+        & * {
+            white-space: pre;
+        }
+    }
+
+    .download-button {
+        width: 100%;
+        margin: 40px auto;
     }
 }
 </style>

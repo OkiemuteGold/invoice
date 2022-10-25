@@ -28,6 +28,15 @@ npm run lint
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
+### Download Invoice View
+
+Using jsPDF and html2canvas with Vue
+
+```
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+```
+
 ### Firebase Config v9
 
 ```

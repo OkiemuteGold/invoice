@@ -256,7 +256,7 @@ button,
     margin: 0 auto;
 
     @media (min-width: 900px) {
-        padding-top: 72px;
+        padding-top: 70px;
     }
 }
 
