@@ -276,7 +276,7 @@
 import { mapActions, mapMutations, mapState } from "vuex";
 import { uid } from "uid";
 import { db } from "../firebase/firebaseInit";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import LoadingProcess from "./LoadingProcess.vue";
 
 export default {
@@ -461,7 +461,7 @@ export default {
             this.loading = true;
             this.calculateInvoiceTotalPrice();
 
-            await addDoc(collection(db, "invoices", this.docId), {
+            await updateDoc(doc(db, "invoices", this.docId), {
                 billerStreetAddress: this.billerStreetAddress,
                 billerCity: this.billerCity,
                 billerZipCode: this.billerZipCode,

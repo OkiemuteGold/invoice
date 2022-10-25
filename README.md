@@ -60,15 +60,16 @@ Ref: https://stackoverflow.com/questions/47474522/firestore-difference-between-s
 ### Firebase - Update
 
 ```
-setDoc():
-while using setDoc(), include
-{ merge: true },
-after the data { ... }, to merge otherwise its contents will be overwritten with the newly provided data.
-
-
 updateDoc():
 import { doc, updateDoc } from "firebase/firestore";
 
 const invoiceDoc = doc(db, "invoices", docId);
 await updateDoc(invoiceDoc, { ... });
+
+
+setDoc():
+while using setDoc(), include
+{ merge: true },
+after the data { ... }, to merge otherwise its contents will be overwritten with the newly provided data.
+
 ```
