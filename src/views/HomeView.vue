@@ -4,12 +4,29 @@
         <div class="header flex">
             <div class="left flex flex-column">
                 <h1>Invoices</h1>
-                <p>There are <span>4</span> total invoices</p>
+                <p>
+                    <span v-show="allInvoiceData.length > 1">
+                        There are <span>{{ allInvoiceData.length }}</span> total
+                        invoices
+                    </span>
+                    <span v-show="allInvoiceData.length === 1">
+                        There is only 1 invoice
+                    </span>
+                    <span v-show="allInvoiceData.length === 0">
+                        There are no invoice currently
+                    </span>
+                </p>
             </div>
 
             <div class="right flex">
                 <div class="filter flex" @click="toggleFilterMenu">
-                    <span>Filter by:</span>
+                    <span
+                        >Filter by
+                        <span v-if="filteredStatus"
+                            >: {{ filteredStatus }}</span
+                        >
+                    </span>
+
                     <img
                         src="@/assets/icon-arrow-down.svg"
                         alt="down arrow icon"
@@ -18,10 +35,13 @@
 
                     <transition name="zoomIn">
                         <ul class="filter-menu" v-show="filterMenu">
-                            <li>Draft</li>
-                            <li>Pending</li>
-                            <li>Paid</li>
-                            <li>Clear Filter</li>
+                            <li
+                                @click="filterInvoices"
+                                v-for="(option, index) in filterMenuOptions"
+                                :key="index"
+                            >
+                                {{ option }}
+                            </li>
                         </ul>
                     </transition>
                 </div>
@@ -42,7 +62,7 @@
         <!-- invoice -->
         <div v-if="allInvoiceData.length > 0">
             <AllInvoices
-                v-for="(invoiceSingle, index) in allInvoiceData"
+                v-for="(invoiceSingle, index) in filteredInvoices"
                 :key="index"
                 :invoice="invoiceSingle"
             />
@@ -76,11 +96,31 @@ export default {
 
     computed: {
         ...mapState(["allInvoiceData"]),
+
+        filteredInvoices() {
+            return this.allInvoiceData.filter((invoice) => {
+                if (this.filteredStatus === "Draft") {
+                    return invoice.invoiceDraft === true;
+                }
+
+                if (this.filteredStatus === "Pending") {
+                    return invoice.invoicePending === true;
+                }
+
+                if (this.filteredStatus === "Paid") {
+                    return invoice.invoicePaid === true;
+                }
+
+                return invoice;
+            });
+        },
     },
 
     data() {
         return {
+            filterMenuOptions: ["Draft", "Pending", "Paid", "Clear Filter"],
             filterMenu: null,
+            filteredStatus: null,
         };
     },
 
@@ -94,6 +134,17 @@ export default {
         toggleFilterMenu() {
             this.filterMenu = !this.filterMenu;
         },
+
+        filterInvoices(e) {
+            const elem = e.target.innerText;
+
+            if (elem.toLowerCase() === "clear filter") {
+                this.filteredStatus = null;
+                return;
+            }
+
+            this.filteredStatus = elem;
+        },
     },
 };
 </script>
@@ -102,6 +153,7 @@ export default {
 .home {
     color: var(--white);
     z-index: 98;
+    padding-bottom: 3%;
 
     .header {
         margin-top: 2%;
