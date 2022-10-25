@@ -28,15 +28,6 @@ npm run lint
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-### Download Invoice View
-
-Using jsPDF and html2canvas with Vue
-
-```
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-```
-
 ### Firebase Config v9
 
 ```
@@ -80,5 +71,13 @@ setDoc():
 while using setDoc(), include
 { merge: true },
 after the data { ... }, to merge otherwise its contents will be overwritten with the newly provided data.
+```
 
+### Download Invoice View
+
+Using jsPDF and html2canvas with Vue
+
+```
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 ```
