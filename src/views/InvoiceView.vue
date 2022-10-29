@@ -163,7 +163,9 @@ export default {
         ...mapState(["currentInvoiceArray", "editInvoice"]),
 
         isPasswordCorrect() {
-            return this.downloadPassword === "password";
+            return (
+                this.downloadPassword === process.env.VUE_APP_DOWNLOAD_PASSWORD
+            );
         },
     },
 
