@@ -124,7 +124,28 @@
             </div>
         </div>
 
-        <button class="download-button purple" @click="downloadInvoice">
+        <div class="password-box" v-show="isAttemptingDownload">
+            <p>Please enter password to continue</p>
+
+            <input
+                type="password"
+                name="downloadPassword"
+                id="downloadPassword"
+                v-model="downloadPassword"
+            />
+
+            <span>{{ downloadPassword }}</span> <br />
+
+            <button
+                class="purple"
+                v-if="isPasswordCorrect"
+                @click="downloadInvoice"
+            >
+                Download
+            </button>
+        </div>
+
+        <button class="download-button purple" @click="openPasswordBox">
             Download Invoice
         </button>
     </div>
@@ -140,6 +161,10 @@ export default {
 
     computed: {
         ...mapState(["currentInvoiceArray", "editInvoice"]),
+
+        isPasswordCorrect() {
+            return this.downloadPassword === "password";
+        },
     },
 
     created() {
@@ -150,6 +175,8 @@ export default {
         return {
             currentInvoice: null,
             printing: null,
+            isAttemptingDownload: null,
+            downloadPassword: null,
         };
     },
 
@@ -199,6 +226,14 @@ export default {
         //         this.printing = false;
         //     }, 400);
         // },
+
+        openPasswordBox() {
+            this.isAttemptingDownload = true;
+
+            setTimeout(() => {
+                this.isAttemptingDownload = false;
+            }, 1000 * 60 * 5);
+        },
 
         downloadInvoice() {
             const invoiceName = this.currentInvoice.invoiceId;
