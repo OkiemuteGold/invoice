@@ -1,7 +1,11 @@
 <template>
     <div v-if="currentInvoice" class="invoice-view container">
         <!-- v-if="!printing" -->
-        <router-link class="nav-link flex" :to="{ name: 'Home' }">
+        <router-link
+            class="nav-link flex"
+            :to="{ name: 'Home' }"
+            @click="TOGGLE_PASSWORD_INPUT_MODAL()"
+        >
             <img src="@/assets/icon-arrow-left.svg" alt="left arrow icon" /> Go
             Back
         </router-link>
@@ -124,49 +128,41 @@
             </div>
         </div>
 
-        <div class="password-box" v-show="isAttemptingDownload">
-            <p>Please enter password to continue</p>
-
-            <input
-                type="password"
-                name="downloadPassword"
-                id="downloadPassword"
-                v-model="downloadPassword"
-            />
-
-            <span>{{ downloadPassword }}</span> <br />
-
-            <button
-                class="purple"
-                v-if="isPasswordCorrect"
-                @click="downloadInvoice"
-            >
-                Download
-            </button>
-        </div>
-
-        <button class="download-button purple" @click="openPasswordBox">
+        <button
+            class="download-button purple"
+            @click="openPasswordBox"
+            :disabled="passwordInputModalActive"
+        >
             Download Invoice
         </button>
+
+        <div v-if="passwordInputModalActive">
+            <PasswordInputModal
+                :invoiceId="currentInvoice.invoiceId"
+                :invoiceContent="this.$refs.invoiceContent"
+            />
+        </div>
     </div>
 </template>
 
 <script>
+import PasswordInputModal from "@/components/PasswordInputModal";
+
 import { mapActions, mapMutations, mapState } from "vuex";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 
 export default {
     name: "invoiceView",
 
-    computed: {
-        ...mapState(["currentInvoiceArray", "editInvoice"]),
+    components: {
+        PasswordInputModal,
+    },
 
-        isPasswordCorrect() {
-            return (
-                this.downloadPassword === process.env.VUE_APP_DOWNLOAD_PASSWORD
-            );
-        },
+    computed: {
+        ...mapState([
+            "currentInvoiceArray",
+            "editInvoice",
+            "passwordInputModalActive",
+        ]),
     },
 
     created() {
@@ -176,9 +172,7 @@ export default {
     data() {
         return {
             currentInvoice: null,
-            printing: null,
-            isAttemptingDownload: null,
-            downloadPassword: null,
+            // printing: null,
         };
     },
 
@@ -187,6 +181,7 @@ export default {
             "SET_CURRENT_INVOICE",
             "TOGGLE_EDIT_INVOICE",
             "TOGGLE_INVOICE",
+            "TOGGLE_PASSWORD_INPUT_MODAL",
         ]),
 
         ...mapActions([
@@ -203,11 +198,14 @@ export default {
         toggleEditInvoice() {
             this.TOGGLE_EDIT_INVOICE();
             this.TOGGLE_INVOICE();
+            this.TOGGLE_PASSWORD_INPUT_MODAL();
         },
 
         async deleteInvoice(docId) {
             await this.DELETE_INVOICE(docId);
             this.$router.push({ name: "Home" });
+
+            this.TOGGLE_PASSWORD_INPUT_MODAL();
         },
 
         updateStatusToPaid(docId) {
@@ -230,55 +228,7 @@ export default {
         // },
 
         openPasswordBox() {
-            this.isAttemptingDownload = true;
-
-            setTimeout(() => {
-                this.isAttemptingDownload = false;
-            }, 1000 * 60 * 5);
-        },
-
-        downloadInvoice() {
-            const invoiceName = this.currentInvoice.invoiceId;
-            const content = this.$refs.invoiceContent;
-            // const contentHtml = content.innerText;
-
-            // {orientation: "landscape",} as arg in jsPDF
-            const doc = new jsPDF({
-                orientation: "landscape",
-                unit: "px",
-                format: "a4",
-                hotfixes: ["px_scaling"],
-            });
-
-            // doc.text(contentHtml, 10, 10);
-            // doc.save("invoice-" + invoiceName + ".pdf");
-
-            // let canvasElement = document.createElement("canvas");
-            // html2canvas(content, { canvas: canvasElement }).then(function (
-            //     canvas
-            // ) {
-            //     const img = canvas.toDataURL("image/jpeg", 0.8);
-            //     doc.addImage(img, "JPEG", 20, 20);
-            //     doc.save("invoice-" + invoiceName + ".pdf");
-            // });
-
-            html2canvas(content, {
-                width: doc.internal.pageSize.getWidth(),
-                height: doc.internal.pageSize.getHeight(),
-            }).then((canvas) => {
-                const img = canvas.toDataURL("image/png");
-
-                doc.addImage(
-                    img,
-                    "PNG",
-                    140,
-                    10,
-                    doc.internal.pageSize.getWidth(),
-                    doc.internal.pageSize.getHeight()
-                );
-
-                doc.save("invoice-" + invoiceName + ".pdf");
-            });
+            this.TOGGLE_PASSWORD_INPUT_MODAL();
         },
     },
 
@@ -294,6 +244,8 @@ export default {
 
 <style lang="scss" scoped>
 .invoice-view {
+    position: relative;
+
     .nav-link {
         font-size: 12px;
         align-items: center;

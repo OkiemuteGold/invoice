@@ -213,6 +213,11 @@ button,
     cursor: pointer;
 }
 
+button:disabled {
+    opacity: 0.6;
+    cursor: auto;
+}
+
 .dark-purple {
     background-color: var(--darkPurple);
 }

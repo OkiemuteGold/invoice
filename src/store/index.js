@@ -7,6 +7,7 @@ export default createStore({
         allInvoiceData: [],
         invoiceModal: null,
         modalActive: null,
+        passwordInputModalActive: null,
         invoicesLoaded: null,
         currentInvoiceArray: null,
         editInvoice: null,
@@ -22,6 +23,10 @@ export default createStore({
 
         TOGGLE_POPUP_MODAL(state) {
             state.modalActive = !state.modalActive;
+        },
+
+        TOGGLE_PASSWORD_INPUT_MODAL(state) {
+            state.passwordInputModalActive = !state.passwordInputModalActive;
         },
 
         SET_INVOICE_DATA(state, payload) {
